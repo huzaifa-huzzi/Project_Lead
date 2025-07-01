@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:project_x/Resources/Reusable%20Widgets/PrimartBtn.dart';
 import '../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
 import '../../View_model/Controllers/FormController.dart';
@@ -67,15 +68,21 @@ class _FormFillingState extends State<FormFilling> {
                     ),
                   ),
                   buildFormRow(
-                    TextInputForm(
-                      myController: controller.phoneNumberController,
-                      focusNode: controller.phoneNumberFocusNode,
-                      onFieldSubmittedView: (value) {},
-                      keyBoardType: TextInputType.phone,
-                      hint: 'Phone',
-                      iconData: Icons.phone_outlined,
-                      onValidator: (value) {
-                        if (value!.isEmpty) return 'Please enter phone number';
+                    IntlPhoneField(
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                      initialCountryCode: 'AU',
+                      onChanged: (phone) {
+                        controller.phoneNumberController.text = phone.completeNumber ;
+                      },
+                      validator: (value) {
+                        if (value == null || value.number.isEmpty) {
+                          return 'Please enter phone number';
+                        }
                         return null;
                       },
                     ),
@@ -185,3 +192,5 @@ class _FormFillingState extends State<FormFilling> {
     );
   }
 }
+
+

@@ -8,6 +8,8 @@ class FormController extends GetxController{
   final phoneNumberController = TextEditingController();
   final zipcodeController = TextEditingController();
   final countryController = TextEditingController();
+  final suburbController = TextEditingController();
+  final stateController = TextEditingController();
 
    // loading
   Rx<bool> loading = false.obs;
@@ -19,6 +21,24 @@ class FormController extends GetxController{
   final phoneNumberFocusNode = FocusNode();
   final zipcodeFocusNode= FocusNode();
   final countryFocusNode = FocusNode();
+  final suburbFocusNode= FocusNode();
+  final stateFocusNode = FocusNode();
+
+  // Dropdown for the suburbs
+  var selectedSuburb = ''.obs;
+
+  final List<String> suburbs = [
+    'Sydney',
+    'Melbourne',
+    'South Yarra',
+    'Paddington',
+    'Toorak',
+    'Cremorne Point',
+    'Woolwich',
+    'Mosman',
+    'North Sydney'
+  ];
+
 
 
 

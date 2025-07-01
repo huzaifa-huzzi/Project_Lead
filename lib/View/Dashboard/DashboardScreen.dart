@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import 'package:project_x/View/Form/Form.dart';
 
+import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -19,33 +21,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: const Text(
         'Home',
         style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1F2937)),
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFF1F2937),
+        ),
       ),
     ),
-    FormFilling(),
+    const FormFilling(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final bool isMobile = MediaQuery.of(context).size.width < 600;
+    SizingConfig.init(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Lead',
           style: TextStyle(
-              fontSize: 24,
-              color: AppColors.surfaceColor,
-              fontFamily: 'sans-Serif'),
+            fontSize: 24,
+            color: AppColors.surfaceColor,
+            fontFamily: 'sans-Serif',
+          ),
         ),
         backgroundColor: const Color(0xFF1E3A8A),
         automaticallyImplyLeading: false,
       ),
       body: Row(
         children: [
-          if (MediaQuery.of(context).size.width >= 640)
+          if (!isMobile)
             NavigationRail(
               selectedIndex: _selectedIndex,
               onDestinationSelected: (int index) {
@@ -57,26 +62,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
               selectedIconTheme: IconThemeData(color: AppColors.primaryColor),
               unselectedIconTheme: IconThemeData(color: Colors.grey[300]),
               selectedLabelTextStyle: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               unselectedLabelTextStyle: const TextStyle(color: Colors.white60),
-              destinations: const [
+              destinations:  [
                 NavigationRailDestination(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 10.0),
-                    child: Icon(Icons.home),
+                  icon: Column(
+                    children: [
+                      Icon(Icons.home),
+                    ],
                   ),
                   label: Text('Home'),
                 ),
                 NavigationRailDestination(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    child: Icon(Icons.description),
+                  icon: Column(
+                    children: [
+                      Icon(Icons.description),
+                    ],
                   ),
                   label: Text('Form'),
                 ),
               ],
             ),
-          Expanded(child: _screens[_selectedIndex]),
+          Expanded(
+            child: _screens[_selectedIndex],
+          ),
         ],
       ),
       bottomNavigationBar: isMobile

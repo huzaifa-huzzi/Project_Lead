@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_x/Resources/Reusable%20Widgets/PrimartBtn.dart';
-
-import '../../Resources/Reusable Widgets/RoundedButton.dart';
 import '../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
 import '../../View_model/Controllers/FormController.dart';
 
@@ -48,12 +46,10 @@ class _FormFillingState extends State<FormFilling> {
                       focusNode: controller.nameFocusNode,
                       onFieldSubmittedView: (value) {},
                       keyBoardType: TextInputType.text,
-                      hint: 'Organization name',
+                      hint: 'Name',
                       iconData: Icons.person_outline,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter username';
-                        }
+                        if (value!.isEmpty) return 'Please enter Name';
                         return null;
                       },
                     ),
@@ -65,9 +61,7 @@ class _FormFillingState extends State<FormFilling> {
                       hint: 'Email',
                       iconData: Icons.email_outlined,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter email';
-                        }
+                        if (value!.isEmpty) return 'Please enter email';
                         return null;
                       },
                     ),
@@ -81,9 +75,7 @@ class _FormFillingState extends State<FormFilling> {
                       hint: 'Phone',
                       iconData: Icons.phone_outlined,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter phone number';
-                        }
+                        if (value!.isEmpty) return 'Please enter phone number';
                         return null;
                       },
                     ),
@@ -95,9 +87,7 @@ class _FormFillingState extends State<FormFilling> {
                       hint: 'Address',
                       iconData: Icons.location_city_outlined,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter city';
-                        }
+                        if (value!.isEmpty) return 'Please enter address';
                         return null;
                       },
                     ),
@@ -113,9 +103,7 @@ class _FormFillingState extends State<FormFilling> {
                       hint: 'Zip Code',
                       iconData: Icons.home_outlined,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter address';
-                        }
+                        if (value!.isEmpty) return 'Please enter zip code';
                         return null;
                       },
                     ),
@@ -129,16 +117,64 @@ class _FormFillingState extends State<FormFilling> {
                       hint: 'Country',
                       iconData: Icons.flag_outlined,
                       onValidator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter country';
-                        }
+                        if (value!.isEmpty) return 'Please enter country';
                         return null;
                       },
                     ),
                   ),
+
+                  buildFormRow(
+                    Obx(() => DropdownButtonFormField<String>(
+                      value: controller.selectedSuburb.value.isEmpty ? null : controller.selectedSuburb.value,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.location_on_outlined),
+                        hintText: 'Select Suburb',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      ),
+                      items: controller.suburbs.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a suburb';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        controller.selectedSuburb.value = value!;
+                      },
+                    )),
+                    TextInputForm(
+                      myController: controller.stateController,
+                      focusNode: controller.stateFocusNode,
+                      onFieldSubmittedView: (value) {
+                        FocusScope.of(context).unfocus();
+                      },
+                      keyBoardType: TextInputType.text,
+                      hint: 'State',
+                      iconData: Icons.map_outlined,
+                      onValidator: (value) {
+                        if (value!.isEmpty) return 'Please enter state';
+                        return null;
+                      },
+                    ),
+                  ),
+
                   Obx(() => Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: PrimaryBtn(title: 'Submit', onTap: (){}, loading: controller.loading.value)
+                    child: PrimaryBtn(
+                      title: 'Submit',
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          print('submit');
+                        }
+                      },
+                      loading: controller.loading.value,
+                    ),
                   )),
                 ],
               ),

@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   loading_indicator: ^3.1.1
   get: ^4.7.2
-  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:

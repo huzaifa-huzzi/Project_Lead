@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import '../Resources/Colors/Colors.dart';
 
@@ -12,16 +11,18 @@ class Utils {
   }
 
 
-  // Success Toast
-  static void showSuccessToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
+// success Snackbar
+  static void showSuccessSnackbar(String title, String message) {
+    Get.snackbar(
+      title,
+      message,
       backgroundColor: AppColors.successColor,
-      textColor: AppColors.surfaceColor,
-      gravity: ToastGravity.BOTTOM,
+      colorText: AppColors.surfaceColor,
+      snackPosition: SnackPosition.TOP,
+      margin: const EdgeInsets.all(12),
+      borderRadius: 8,
     );
   }
-
 
   // Error Snackbar
   static void showErrorSnackbar(String title, String message) {

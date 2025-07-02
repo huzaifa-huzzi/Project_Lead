@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FormController extends GetxController{
+class FormController extends GetxController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final addressController = TextEditingController();
@@ -10,19 +10,22 @@ class FormController extends GetxController{
   final countryController = TextEditingController();
   final suburbController = TextEditingController();
   final stateController = TextEditingController();
+  final websiteController = TextEditingController();
+  final phoneTypeController = ''.obs;
 
-   // loading
+  // Loading indicator
   Rx<bool> loading = false.obs;
 
-  // focusNodes
+  // FocusNodes
   final nameFocusNode = FocusNode();
-  final emailFocusNode= FocusNode();
+  final emailFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
-  final zipcodeFocusNode= FocusNode();
+  final zipcodeFocusNode = FocusNode();
   final countryFocusNode = FocusNode();
-  final suburbFocusNode= FocusNode();
+  final suburbFocusNode = FocusNode();
   final stateFocusNode = FocusNode();
+  final websiteFocusNode = FocusNode();
 
   // Dropdown for the suburbs
   var selectedSuburb = ''.obs;
@@ -39,8 +42,30 @@ class FormController extends GetxController{
     'North Sydney'
   ];
 
+  // Dispose all controllers and focus nodes
+  @override
+  void onClose() {
 
+    nameController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    phoneNumberController.dispose();
+    zipcodeController.dispose();
+    countryController.dispose();
+    suburbController.dispose();
+    stateController.dispose();
+    websiteController.dispose();
 
+    nameFocusNode.dispose();
+    emailFocusNode.dispose();
+    addressFocusNode.dispose();
+    phoneNumberFocusNode.dispose();
+    zipcodeFocusNode.dispose();
+    countryFocusNode.dispose();
+    suburbFocusNode.dispose();
+    stateFocusNode.dispose();
+    websiteFocusNode.dispose();
 
-
+    super.onClose();
+  }
 }

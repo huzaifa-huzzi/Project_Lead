@@ -140,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       menuItems[index]['icon'],
                       color: isSelected ? AppColors.primaryColor : Colors.white,
                     ),
-                    const SizedBox(height: 4),
+                     SizedBox(height: SizingConfig.height(0.02) ),
                     Text(
                       menuItems[index]['label'],
                       style: TextStyle(

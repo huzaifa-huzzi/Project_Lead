@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:project_x/Resources/Reusable%20Widgets/PrimartBtn.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
 import '../../View_model/Controllers/FormController.dart';
 import '../../Resources/Colors/Colors.dart';
+import 'Widgets/FormFillingButtonWidgets.dart';
 
+
+//  have to make the widgets of this screen now
 class FormFilling extends StatefulWidget {
   const FormFilling({super.key});
 
@@ -40,6 +42,7 @@ class _FormFillingState extends State<FormFilling> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      /// Personal information
                       const Text("Personal Information",
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                        SizedBox(height:SizingConfig.height(0.04)),
@@ -76,6 +79,7 @@ class _FormFillingState extends State<FormFilling> {
                         ],
                       ),
 
+                       /// contact info
                        SizedBox(height: SizingConfig.height(0.02)),
                       const Text("Contact Details",
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -165,6 +169,7 @@ class _FormFillingState extends State<FormFilling> {
                         ],
                       ),
 
+                       /// Location info
                        SizedBox(height:SizingConfig.height(0.02)),
                       const Text("Location Info",
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -250,17 +255,8 @@ class _FormFillingState extends State<FormFilling> {
                       ),
 
                        SizedBox(height: SizingConfig.height(0.02)),
-                      Obx(() => Center(
-                        child: PrimaryBtn(
-                          title: 'Submit',
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              print('Form submitted successfully');
-                            }
-                          },
-                          loading: controller.loading.value,
-                        ),
-                      )),
+                      /// Button
+                      FormFillingButtonWidget(formKey: _formKey, controller: controller),
                     ],
                   ),
                 ),
@@ -272,3 +268,4 @@ class _FormFillingState extends State<FormFilling> {
     );
   }
 }
+

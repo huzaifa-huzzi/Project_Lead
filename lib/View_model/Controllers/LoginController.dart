@@ -11,6 +11,13 @@ class LoginController extends GetxController {
   final usernameFocus = FocusNode();
   final passwordFocus = FocusNode();
 
-
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    usernameFocus.dispose();
+    passwordFocus.dispose();
+    super.dispose();
+  }
 
 }

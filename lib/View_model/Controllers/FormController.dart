@@ -13,10 +13,10 @@ class FormController extends GetxController {
   final websiteController = TextEditingController();
   final phoneTypeController = ''.obs;
 
-  // Loading indicator
+  /// Loading indicator
   Rx<bool> loading = false.obs;
 
-  // FocusNodes
+  /// FocusNodes
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
@@ -27,7 +27,7 @@ class FormController extends GetxController {
   final stateFocusNode = FocusNode();
   final websiteFocusNode = FocusNode();
 
-  // Dropdown for the suburbs
+  /// Dropdown for the suburbs
   var selectedSuburb = ''.obs;
 
   final List<String> suburbs = [
@@ -42,7 +42,7 @@ class FormController extends GetxController {
     'North Sydney'
   ];
 
-  // Dispose all controllers and focus nodes
+  /// Dispose all controllers and focus nodes
   @override
   void onClose() {
 
@@ -55,7 +55,6 @@ class FormController extends GetxController {
     suburbController.dispose();
     stateController.dispose();
     websiteController.dispose();
-
     nameFocusNode.dispose();
     emailFocusNode.dispose();
     addressFocusNode.dispose();

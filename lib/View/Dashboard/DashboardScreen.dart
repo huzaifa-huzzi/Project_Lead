@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import 'package:project_x/View/Form/Form.dart';
+import 'package:project_x/View/Home/HomeScreen.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -15,22 +16,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   /// Screens
   final List<Widget> _screens = [
-    Container(
-      color: const Color(0xFFF9FAFB),
-      alignment: Alignment.center,
-      child: const Text(
-        'Home',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF1F2937),
-        ),
-      ),
-    ),
-    const FormFilling(),
+    HomeScreen(),
+    FormFilling(),
   ];
 
-  /// Navbars data
+  /// Navbar data
   final List<Map<String, dynamic>> menuItems = [
     {'icon': Icons.home, 'label': 'Dashboard'},
     {'icon': Icons.description, 'label': 'Form'},

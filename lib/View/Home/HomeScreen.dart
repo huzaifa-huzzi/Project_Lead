@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 
+/// Dont have to make widgets in it because have to done changes in them
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

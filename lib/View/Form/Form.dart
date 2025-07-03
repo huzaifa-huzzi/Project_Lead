@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
-import '../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
 import '../../View_model/Controllers/FormController.dart';
 import '../../Resources/Colors/Colors.dart';
 import 'Widgets/FormContactInfoWidget.dart';
@@ -11,7 +9,6 @@ import 'Widgets/FormLocationInfoWidget.dart';
 import 'Widgets/FormPersonalInformationWidget.dart';
 
 
-//  have to make the widgets of this screen now
 class FormFilling extends StatefulWidget {
   const FormFilling({super.key});
 

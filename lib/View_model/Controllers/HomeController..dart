@@ -7,6 +7,7 @@ class HomeController extends GetxController {
   RxString selectedRange = 'Day'.obs;
   RxDouble maxY = 10.0.obs;
   RxList<BarChartGroupData> barData = <BarChartGroupData>[].obs;
+  final Rx<bool>  loading  = false.obs;
 
   final Map<String, List<double>> dummyData = {
     'Day': [0, 6.5, 8.3, 7.2, 8.0, 1.3, 0],

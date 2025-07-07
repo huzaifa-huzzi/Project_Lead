@@ -10,7 +10,8 @@ class TextInputForm extends StatelessWidget {
   final String hint;
   final bool enable,autoFocus;
   final IconData iconData;
-  const TextInputForm({super.key, required this.myController, required this.focusNode, required this.onFieldSubmittedView, required this.keyBoardType, required this.hint,  this.enable = true,  this.autoFocus = false, required this.iconData, required this.onValidator});
+  final Color? iconColor;
+  const TextInputForm({super.key, required this.myController, required this.focusNode, required this.onFieldSubmittedView, required this.keyBoardType, required this.hint,  this.enable = true,  this.autoFocus = false, required this.iconData, required this.onValidator,this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class TextInputForm extends StatelessWidget {
         hintStyle:  Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
         ),
-        prefixIcon: Icon(iconData),
+        prefixIcon: Icon(iconData,color: iconColor,),
       ),
       onFieldSubmitted: onFieldSubmittedView,
       validator: onValidator,

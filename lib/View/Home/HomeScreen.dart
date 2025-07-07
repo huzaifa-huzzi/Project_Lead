@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                /// Profile Image + Email
+                /// Profile Image
                 PopupMenuButton<String>(
                   onSelected: (value) {},
                   itemBuilder: (context) => [
@@ -177,27 +177,72 @@ class HomeScreen extends StatelessWidget {
               elevation: 8,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    _readonlyField("Name", "Huzaifa Khan"),
-                    _readonlyField("Email", "huzaifaatta8152@gmail.com"),
-                    _readonlyField("Phone", "+92 331 5178220"),
-                    _readonlyField("Phone Type", "Personal"),
-                    _readonlyField("Website", "https://huzaifadev.com"),
-                    _readonlyField("Address", "Malakand stop near Wah General Hospital"),
-                    _readonlyField("Suburb", "Wah Cantt"),
-                    _readonlyField("State", "Punjab"),
-                    _readonlyField("Country", "Pakistan"),
-                    _readonlyField("Zip Code", "4400"),
+                     SizedBox(height: SizingConfig.height(0.02)),
+
+                    /// Section: Personal Information
+                    Text("Personal Information",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,)),
+                     SizedBox(height: SizingConfig.height(0.02)),
+                    Row(
+                      children: [
+                        Expanded(child: _readonlyField("Name", "Huzaifa Khan")),
+                         SizedBox(width: SizingConfig.width(0.03)),
+                        Expanded(child: _readonlyField("Email", "huzaifaatta8152@gmail.com")),
+                      ],
+                    ),
+
+                     SizedBox(height: SizingConfig.height(0.02)),
+
+                    /// Section: Contact Information
+                    Text("Contact Information",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,)),
+                     SizedBox(height:SizingConfig.height(0.02)),
+                    Row(
+                      children: [
+                        Expanded(child: _readonlyField("Phone", "+92 331 5178220")),
+                         SizedBox(width: SizingConfig.width(0.03)),
+                        Expanded(child: _readonlyField("Phone Type", "Personal")),
+                      ],
+                    ),
+                     SizedBox(height: SizingConfig.height(0.02)),
+                    Row(
+                      children: [
+                        Expanded(child: _readonlyField("Website", "https://huzaifadev.com")),
+                         SizedBox(width: SizingConfig.width(0.03)),
+                        Expanded(child: _readonlyField("Address", "Malakand stop near Wah General Hospital")),
+                      ],
+                    ),
+
+                     SizedBox(height: SizingConfig.height(0.02)),
+
+                    /// Section: Location Information
+                    Text("Location Information",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(child: _readonlyField("Suburb", "Wah Cantt")),
+                         SizedBox(width: SizingConfig.width(0.03)),
+                        Expanded(child: _readonlyField("State", "Punjab")),
+                      ],
+                    ),
+                     SizedBox(height: SizingConfig.height(0.02)),
+                    Row(
+                      children: [
+                        Expanded(child: _readonlyField("Country", "Pakistan")),
+                         SizedBox(width: SizingConfig.width(0.03)),
+                        Expanded(child: _readonlyField("Zip Code", "4400")),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
-
-
+            )
 
           ],
         ),
@@ -206,24 +251,21 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _readonlyField(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: TextFormField(
-        initialValue: value,
-        enabled: false,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          filled: true,
-          fillColor: Colors.grey.shade100,
-        ),
-        style: TextStyle(color: Colors.black87),
+    return TextFormField(
+      initialValue: value,
+      enabled: false,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        filled: true,
+        fillColor: Colors.grey.shade100,
       ),
+      style: const TextStyle(color: Colors.black87),
     );
   }
+
+
 
 
 

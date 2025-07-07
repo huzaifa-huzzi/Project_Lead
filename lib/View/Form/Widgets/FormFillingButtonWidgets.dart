@@ -16,37 +16,69 @@ class FormFillingButtonWidget extends StatelessWidget {
   final FormController controller;
 
   @override
+  @override
   Widget build(BuildContext context) {
     SizingConfig.init(context);
-    return Obx(() => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
+    return Obx(() => isMobile
+        ? Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ///  Clear Button
         PrimaryBtn(
           title: 'Clear',
           onTap: () {
-              _formKey.currentState?.reset();
-              controller.clearForm();
+            _formKey.currentState?.reset();
+            controller.clearForm();
           },
           loading: controller.loading.value,
-          color: Color(0xff515a65),
+          color: const Color(0xff515a65),
         ),
-
-         SizedBox(width: SizingConfig.width(0.02)),
-
-        ///  Submit Button
+        const SizedBox(height: 16),
         PrimaryBtn(
           title: 'Submit',
           onTap: () {
             if (_formKey.currentState!.validate()) {
               print('Form submitted successfully');
-              // Logic
             }
           },
-          loading: controller.loading.value, color: AppColors.primaryColor,
+          loading: controller.loading.value,
+          color: AppColors.primaryColor,
+        ),
+      ],
+    )
+        : Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: SizingConfig.width(0.15),
+          child: PrimaryBtn(
+            title: 'Clear',
+            onTap: () {
+              _formKey.currentState?.reset();
+              controller.clearForm();
+            },
+            loading: controller.loading.value,
+            color: const Color(0xff515a65),
+          ),
+        ),
+        SizedBox(width: SizingConfig.width(0.02)),
+        SizedBox(
+          width: SizingConfig.width(0.15),
+          child: PrimaryBtn(
+            title: 'Submit',
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                print('Form submitted successfully');
+              }
+            },
+            loading: controller.loading.value,
+            color: AppColors.primaryColor,
+          ),
         ),
       ],
     ));
   }
+
 }
 

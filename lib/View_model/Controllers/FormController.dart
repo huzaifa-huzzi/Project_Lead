@@ -67,4 +67,20 @@ class FormController extends GetxController {
 
     super.onClose();
   }
+
+  /// Clear all the form
+  void clearForm() {
+    nameController.clear();
+    emailController.clear();
+    addressController.clear();
+    phoneNumberController.clear();
+    zipcodeController.clear();
+    countryController.clear();
+    suburbController.clear();
+    stateController.clear();
+    websiteController.clear();
+    phoneTypeController.value = '';
+    selectedSuburb.value = '';
+  }
+
 }

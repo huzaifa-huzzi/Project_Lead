@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/FormController.dart';
@@ -42,27 +43,44 @@ class _FormFillingState extends State<FormFilling> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      /// Texts & Logos
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            FeatherIcons.key,
+                            size: 20,
+                          ),
+                          SizedBox(width:SizingConfig.width(0.02) ,),
+                          Text(
+                            "Form",
+                            style: TextStyle(fontWeight: FontWeight.w600,fontSize:20),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height:SizingConfig.height(0.03)),
                       /// Personal information
-                      const Text("Personal Information",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                       SizedBox(height:SizingConfig.height(0.04)),
+                       Text("Personal Information",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: AppColors.primaryColor)),
+                       SizedBox(height:SizingConfig.height(0.02)),
                       FormPersonalInformationWidget(isMobile: isMobile, controller: controller),
 
                        /// contact info
                        SizedBox(height: SizingConfig.height(0.02)),
-                      const Text("Contact Details",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                       Text("Contact Details",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: AppColors.primaryColor)),
                        SizedBox(height:SizingConfig.height(0.02)),
                       FormContactInfoWidget(isMobile: isMobile, controller: controller),
 
                        /// Location info
                        SizedBox(height:SizingConfig.height(0.02)),
-                      const Text("Location Info",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                       Text("Location Info",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: AppColors.primaryColor)),
                        SizedBox(height:SizingConfig.height(0.02)),
                       FormLocationInfoWidget(isMobile: isMobile, controller: controller),
 
-                       SizedBox(height: SizingConfig.height(0.02)),
+                       SizedBox(height: SizingConfig.height(0.05)),
                       /// Button
                       FormFillingButtonWidget(formKey: _formKey, controller: controller),
                     ],

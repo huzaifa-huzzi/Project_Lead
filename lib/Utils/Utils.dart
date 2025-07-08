@@ -16,7 +16,7 @@ class Utils {
     Get.snackbar(
       title,
       message,
-      backgroundColor: AppColors.successColor,
+      backgroundColor: Colors.green,
       colorText: AppColors.surfaceColor,
       snackPosition: SnackPosition.TOP,
       margin: const EdgeInsets.all(12),

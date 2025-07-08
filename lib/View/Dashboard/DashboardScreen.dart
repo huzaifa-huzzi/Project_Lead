@@ -21,103 +21,93 @@ class DashboardScreen extends StatelessWidget {
     {'icon': Icons.description, 'label': 'Form'},
   ];
 
-  Widget buildSidebar(bool isDrawer, BuildContext context) {
+  Widget buildSidebar(bool isDrawer, BuildContext context, double screenWidth) {
     return Obx(() {
-      final isCollapsed = controller.isSidebarCollapsed.value;
-
-      return AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+      return Container(
         width: isDrawer
             ? SizingConfig.width(0.6)
-            : isCollapsed
-            ? 60
-            : SizingConfig.width(0.18),
-        color: AppColors.backgroundColor,
+            : (screenWidth >= 1024 ? SizingConfig.width(0.22) : SizingConfig.width(0.18)),
+        color: AppColors.sidebarColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!isCollapsed || isDrawer)
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.01)),
-                  child: Image.asset(
-                    'Assets/images/webkit-image-2.png',
-                    height: isDrawer
-                        ? (MediaQuery.of(context).size.width < 600 ? 70 : 55)
-                        : 80,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            SizedBox(height: SizingConfig.height(0.04)),
-            if (!isCollapsed || isDrawer)
+            // ✅ Show logo only for tablet & mobile
+            if (screenWidth < 1024)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.03)),
-                child: const Text(
-                  "DASHBOARD",
-                  style: TextStyle(
-                    color: AppColors.textColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
+                padding: const EdgeInsets.only(left: 5.0),
+                child: Center(
+                  child: SizedBox(
+                    height: 120,
+                    width: 200,
+                    child: Image.asset(
+                      'Assets/images/webkit-image-2.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
+            SizedBox(height: SizingConfig.height(0.03)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.03)),
+              child: const Text(
+                "DASHBOARD",
+                style: TextStyle(
+                  color: AppColors.sidebarTextColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             SizedBox(height: SizingConfig.height(0.01)),
             ...List.generate(menuItems.length, (index) {
-              return Obx(() {
-                final isSelected = controller.selectedIndex.value == index;
-                return GestureDetector(
-                  onTap: () {
-                    controller.changeScreen(index);
-                    if (isDrawer) Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: SizingConfig.width(0.02),
-                      vertical: SizingConfig.height(0.01),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizingConfig.width(0.03),
-                      vertical: SizingConfig.height(0.018),
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.secondaryColor.withOpacity(0.15)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: controller.isSidebarCollapsed.value && !isDrawer
-                          ? MainAxisAlignment.center
-                          : MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          menuItems[index]['icon'],
-                          size: 20,
-                          color: isSelected ? AppColors.primaryColor : AppColors.textColor,
-                        ),
-                        if (!controller.isSidebarCollapsed.value || isDrawer) ...[
-                          SizedBox(width: SizingConfig.width(0.015)),
-                          Flexible(
-                            child: Text(
-                              menuItems[index]['label'],
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? AppColors.primaryColor
-                                    : AppColors.textColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ]
-                      ],
-                    ),
+              final isSelected = controller.selectedIndex.value == index;
+              return GestureDetector(
+                onTap: () {
+                  controller.changeScreen(index);
+                  if (isDrawer) Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: SizingConfig.width(0.02),
+                    vertical: SizingConfig.height(0.01),
                   ),
-                );
-              });
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizingConfig.width(0.03),
+                    vertical: SizingConfig.height(0.018),
+                  ),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? AppColors.secondaryColor.withOpacity(0.15)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        menuItems[index]['icon'],
+                        size: 20,
+                        color: isSelected
+                            ? AppColors.primaryColor
+                            : AppColors.textColor,
+                      ),
+                      SizedBox(width: SizingConfig.width(0.015)),
+                      Flexible(
+                        child: Text(
+                          menuItems[index]['label'],
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: isSelected
+                                ? AppColors.primaryColor
+                                : AppColors.textColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }),
           ],
         ),
@@ -137,72 +127,84 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Obx(() {
-          final isCollapsed = controller.isSidebarCollapsed.value;
-
-          return Container(
-            color: AppColors.backgroundColor,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                // 👇 dynamically align the hamburger with sidebar width
-                SizedBox(width: isCollapsed ? 60 : SizingConfig.width(0.18)),
+        child: Container(
+          color: AppColors.appBarColors,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              if (showDrawer)
                 Builder(
                   builder: (context) => IconButton(
                     icon: Icon(Icons.menu, color: AppColors.textColor),
                     onPressed: () {
-                      if (showDrawer) {
-                        Scaffold.of(context).openDrawer();
-                      } else {
-                        controller.toggleSidebar();
-                      }
+                      Scaffold.of(context).openDrawer();
                     },
                   ),
                 ),
-                const Spacer(),
+              // ✅ Logo only in AppBar for Web
+              if (screenWidth >= 1024)
                 Padding(
-                  padding: const EdgeInsets.only(right: 4.0),
-                  child: PopupMenuButton<String>(
-                    onSelected: (value) {
-                      // handle signout etc.
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem<String>(
-                        value: 'signout',
-                        child: Row(
-                          children: [
-                            Icon(Icons.logout, size: 18, color: Colors.black54),
-                            SizedBox(width: SizingConfig.width(0.01)),
-                            Text('Sign Out'),
-                          ],
-                        ),
-                      ),
-                    ],
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: 3,
-                        ),
-                      ),
-                      child: const CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage('assets/images/Pic.png'),
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: Center(
+                    child: SizedBox(
+                      height: 100,
+                      width: 200,
+                      child: Image.asset(
+                        'Assets/images/webkit-image-2.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        }),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: PopupMenuButton<String>(
+                  onSelected: (value) {
+                    // handle signout
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem<String>(
+                      value: 'signout',
+                      child: Row(
+                        children: [
+                          Icon(Icons.logout, size: 18, color: Colors.black54),
+                          SizedBox(width: SizingConfig.width(0.01)),
+                          Text('Sign Out'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor,
+                        width: 2,
+                      ),
+                    ),
+                    child: const CircleAvatar(
+                      radius: 16,
+                      backgroundImage: AssetImage('assets/images/Pic.png'),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      drawer: showDrawer ? Drawer(child: SafeArea(child: buildSidebar(true, context))) : null,
+      drawer: showDrawer
+          ? Drawer(
+        child: SafeArea(
+          child: buildSidebar(true, context, screenWidth),
+        ),
+      )
+          : null,
       body: Row(
         children: [
-          if (!showDrawer) buildSidebar(false, context),
+          if (!showDrawer) buildSidebar(false, context, screenWidth),
           Expanded(
             child: Obx(() => _screens[controller.selectedIndex.value]),
           ),

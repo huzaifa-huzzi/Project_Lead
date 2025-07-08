@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/HomeController..dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key,});
+  HomeScreen({super.key});
 
-  final TextEditingController _searchController = TextEditingController();
   final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     SizingConfig.init(context);
 
-
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.screenColors,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: SizingConfig.width(0.06),
@@ -26,221 +23,67 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Header Row (menu + profile)
+            /// Header Row
             Row(
               children: [
-                Icon(Icons.menu_open, size: 23),
-                SizedBox(width: SizingConfig.width(0.02)),
-                Text("Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                const Spacer(),
-
-                /// Search Bar
-                Container(
-                  width: SizingConfig.width(0.3),
-                  height: SizingConfig.height(0.065),
-                  padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.01)),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromRGBO(162, 162, 170, 0.16),
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.search, color: Colors.grey),
-                      SizedBox(width: SizingConfig.width(0.01)),
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: const InputDecoration(
-                            hintText: 'Search here',
-                            border: InputBorder.none,
-                            isDense: true,
-                          ),
-                        ),
-                      ),
-                    ],
+                Text(
+                  "Dashboard",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textColor,
                   ),
                 ),
-
                 const Spacer(),
-
-
               ],
             ),
 
             SizedBox(height: SizingConfig.height(0.07)),
 
-            /// Graph
+            /// Headings + Animated Numbers
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Form Submissions",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
-                ),
-                Obx(() => DropdownButton<String>(
-                  value: controller.selectedRange.value,
-                  onChanged: (value) {
-                    if (value != null) controller.updateChart(value);
-                  },
-                  items: ['Day', 'Week', 'Month']
-                      .map((item) => DropdownMenuItem(value: item, child: Text(item)))
-                      .toList(),
-                )),
+                Obx(() => _buildAnimatedStat("Total", controller.total.value)),
+                Obx(() => _buildAnimatedStat("Daily", controller.daily.value)),
+                Obx(() => _buildAnimatedStat("Weekly", controller.weekly.value)),
+                Obx(() => _buildAnimatedStat("Monthly", controller.monthly.value)),
               ],
             ),
-
-            SizedBox(height: SizingConfig.height(0.03)),
-
-            Obx(() => AspectRatio(
-              aspectRatio: 1.8,
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
-                  maxY: controller.maxY.value,
-                  barTouchData: BarTouchData(enabled: false),
-                  titlesData: FlTitlesData(
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: SizingConfig.width(0.05),
-                        getTitlesWidget: (value, meta) => Padding(
-                          padding: EdgeInsets.only(right: SizingConfig.width(0.01)),
-                          child: Text(value.toInt().toString(),
-                              style: TextStyle(fontSize: SizingConfig.width(0.012))),
-                        ),
-                        interval: (controller.maxY / 5).ceilToDouble(),
-                      ),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) => Padding(
-                          padding: EdgeInsets.only(top: SizingConfig.height(0.005)),
-                          child: Text(controller.getBottomTitle(value.toInt()),
-                              style: TextStyle(fontSize: SizingConfig.width(0.012))),
-                        ),
-                      ),
-                    ),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  barGroups: controller.getBarData(),
-                ),
-              ),
-            )),
-
-            SizedBox(height: SizingConfig.height(0.06)),
-
-            /// Filled Form
-            Text(
-              "Forms Submitted",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
-            ),
-            SizedBox(height: SizingConfig.height(0.03)),
-
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                     SizedBox(height: SizingConfig.height(0.02)),
-
-                    /// Section: Personal Information
-                    Text("Personal Information",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,)),
-                     SizedBox(height: SizingConfig.height(0.02)),
-                    Row(
-                      children: [
-                        Expanded(child: _readonlyField("Name", "Huzaifa Khan")),
-                         SizedBox(width: SizingConfig.width(0.03)),
-                        Expanded(child: _readonlyField("Email", "huzaifaatta8152@gmail.com")),
-                      ],
-                    ),
-
-                     SizedBox(height: SizingConfig.height(0.02)),
-
-                    /// Section: Contact Information
-                    Text("Contact Information",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,)),
-                     SizedBox(height:SizingConfig.height(0.02)),
-                    Row(
-                      children: [
-                        Expanded(child: _readonlyField("Phone", "+92 331 5178220")),
-                         SizedBox(width: SizingConfig.width(0.03)),
-                        Expanded(child: _readonlyField("Phone Type", "Personal")),
-                      ],
-                    ),
-                     SizedBox(height: SizingConfig.height(0.02)),
-                    Row(
-                      children: [
-                        Expanded(child: _readonlyField("Website", "https://huzaifadev.com")),
-                         SizedBox(width: SizingConfig.width(0.03)),
-                        Expanded(child: _readonlyField("Address", "Malakand stop near Wah General Hospital")),
-                      ],
-                    ),
-
-                     SizedBox(height: SizingConfig.height(0.02)),
-
-                    /// Section: Location Information
-                    Text("Location Information",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(child: _readonlyField("Suburb", "Wah Cantt")),
-                         SizedBox(width: SizingConfig.width(0.03)),
-                        Expanded(child: _readonlyField("State", "Punjab")),
-                      ],
-                    ),
-                     SizedBox(height: SizingConfig.height(0.02)),
-                    Row(
-                      children: [
-                        Expanded(child: _readonlyField("Country", "Pakistan")),
-                         SizedBox(width: SizingConfig.width(0.03)),
-                        Expanded(child: _readonlyField("Zip Code", "4400")),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
-
           ],
         ),
       ),
     );
   }
 
-  Widget _readonlyField(String label, String value) {
-    return TextFormField(
-      initialValue: value,
-      enabled: false,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        filled: true,
-        fillColor: Colors.grey.shade100,
-      ),
-      style: const TextStyle(color: Colors.black87),
+  /// Helper: Title + Animated Count
+  Widget _buildAnimatedStat(String title, int targetValue) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            color: AppColors.textColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TweenAnimationBuilder<int>(
+          tween: IntTween(begin: 0, end: targetValue),
+          duration: const Duration(seconds: 2),
+          builder: (context, value, child) {
+            return Text(
+              value.toString(),
+              style: TextStyle(
+                fontSize: 18,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
-
-
-
-
-
-
-
-
 }

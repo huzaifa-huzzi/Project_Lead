@@ -7,7 +7,7 @@ class AppRoutes {
   
   static appRoutes () => [
     GetPage(name:RouteName.loginScreen , page: () => const LoginScreen()),
-    GetPage(name:RouteName.dashboardScreen , page: () => const DashboardScreen()),
+    GetPage(name:RouteName.dashboardScreen , page: () =>  DashboardScreen()),
   ];
   
   

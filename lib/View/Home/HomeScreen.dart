@@ -70,36 +70,7 @@ class HomeScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                /// Profile Image
-                PopupMenuButton<String>(
-                  onSelected: (value) {},
-                  itemBuilder: (context) => [
-                    PopupMenuItem<String>(
-                      value: 'signout',
-                      child: Row(
-                        children: [
-                          Icon(Icons.logout, size: 18, color: Colors.black54),
-                          SizedBox(width: SizingConfig.width(0.01)),
-                          Text('Sign Out'),
-                        ],
-                      ),
-                    ),
-                  ],
-                  child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        width: 3,
-                      ),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('assets/images/Pic.png'),
-                    ),
-                  ),
-                ),
+
               ],
             ),
 

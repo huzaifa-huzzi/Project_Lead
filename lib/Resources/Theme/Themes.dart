@@ -5,11 +5,11 @@ final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   useMaterial3: true,
   scaffoldBackgroundColor: AppColors.backgroundColor,
+  fontFamily: 'Inter',
   colorScheme: ColorScheme.light(
     primary: AppColors.primaryColor,
     onPrimary: Colors.white,
     secondary: AppColors.secondaryColor,
-    onSecondary: Colors.white,
     background: AppColors.backgroundColor,
     onBackground: AppColors.textColor,
     surface: AppColors.surfaceColor,
@@ -17,23 +17,23 @@ final ThemeData lightTheme = ThemeData(
     error: AppColors.errorColor,
     onError: Colors.white,
   ),
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(color: AppColors.textColor),
-    bodyMedium: TextStyle(color: AppColors.textColor),
-    labelLarge: TextStyle(color: AppColors.primaryColor),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryColor,
-      foregroundColor: Colors.white,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.white,
+    elevation: 0,
+    iconTheme: IconThemeData(color: AppColors.textColor),
+    titleTextStyle: TextStyle(
+      color: AppColors.textColor,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: Colors.white,
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: AppColors.lightGrey),
+      borderSide: BorderSide(color: AppColors.borderColor),
     ),
   ),
 );

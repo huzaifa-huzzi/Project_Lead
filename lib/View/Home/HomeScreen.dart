@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(height: SizingConfig.height(0.07)),
 
-            /// Headings + Animated Numbers
+            /// Animated Numbers Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -50,13 +50,25 @@ class HomeScreen extends StatelessWidget {
                 Obx(() => _buildAnimatedStat("Monthly", controller.monthly.value)),
               ],
             ),
+
+            SizedBox(height: SizingConfig.height(0.05)),
+
+            /// Toggle Tabs Row (Day, Week, Month)
+            Obx(() => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildToggleButton("Day", 0),
+                _buildToggleButton("Week", 1),
+                _buildToggleButton("Month", 2),
+              ],
+            )),
           ],
         ),
       ),
     );
   }
 
-  /// Helper: Title + Animated Count
+  /// Stat Widget
   Widget _buildAnimatedStat(String title, int targetValue) {
     return Column(
       children: [
@@ -84,6 +96,39 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  /// Toggle Button Widget
+  Widget _buildToggleButton(String title, int index) {
+    return GestureDetector(
+      onTap: () {
+        controller.selectedTab.value = index;
+        // You can also call API/update UI based on selection
+      },
+      child: Container(
+        width: SizingConfig.width(0.25),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: controller.selectedTab.value == index
+              ? AppColors.primaryColor
+              : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppColors.primaryColor,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(
+            color: controller.selectedTab.value == index
+                ? Colors.white
+                : AppColors.primaryColor,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }

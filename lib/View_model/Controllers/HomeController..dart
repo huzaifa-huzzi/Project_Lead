@@ -15,6 +15,9 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
+  // For the graphs
+  var selectedTab = 0.obs; // for the tabulars
+
 
 
 }

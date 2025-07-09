@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/HomeController..dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
   final HomeController controller = Get.put(HomeController());
 
   @override
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Header Row
+            /// Header
             Row(
               children: [
                 Text(
@@ -38,97 +38,325 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: SizingConfig.height(0.07)),
+            SizedBox(height: SizingConfig.height(0.1)),
 
-            /// Animated Numbers Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            /// Stat Cards
+            Wrap(
+              spacing: 30,
+              runSpacing: 16,
               children: [
                 Obx(() => _buildAnimatedStat("Total", controller.total.value)),
-                Obx(() => _buildAnimatedStat("Daily", controller.daily.value)),
+                Obx(() => _buildAnimatedStat("Today", controller.daily.value)),
                 Obx(() => _buildAnimatedStat("Weekly", controller.weekly.value)),
                 Obx(() => _buildAnimatedStat("Monthly", controller.monthly.value)),
               ],
             ),
 
-            SizedBox(height: SizingConfig.height(0.05)),
+            SizedBox(height: SizingConfig.height(0.1)),
 
-            /// Toggle Tabs Row (Day, Week, Month)
-            Obx(() => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            /// Toggle Buttons
+            Text(
+              "Analysis",
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textColor,
+              ),
+            ),
+            SizedBox(height: SizingConfig.height(0.03)),
+            Row(
               children: [
-                _buildToggleButton("Day", 0),
-                _buildToggleButton("Week", 1),
-                _buildToggleButton("Month", 2),
+                Expanded(child: _buildToggleButton("Day", 0)),
+                const SizedBox(width: 12),
+                Expanded(child: _buildToggleButton("Week", 1)),
+                const SizedBox(width: 12),
+                Expanded(child: _buildToggleButton("Month", 2)),
               ],
-            )),
+            ),
+
+            SizedBox(height: SizingConfig.height(0.1)),
+
+            /// Conditional Chart
+            Obx(() {
+              switch (controller.selectedTab.value) {
+                case 0:
+                  return DayChart();
+                case 1:
+                  return WeekChart();
+                case 2:
+                  return MonthChart();
+                default:
+                  return const SizedBox.shrink();
+              }
+            }),
           ],
         ),
       ),
     );
   }
 
-  /// Stat Widget
   Widget _buildAnimatedStat(String title, int targetValue) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            color: AppColors.textColor,
-            fontWeight: FontWeight.w500,
+    return Container(
+      width: 190,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
-        ),
-        const SizedBox(height: 8),
-        TweenAnimationBuilder<int>(
-          tween: IntTween(begin: 0, end: targetValue),
-          duration: const Duration(seconds: 2),
-          builder: (context, value, child) {
-            return Text(
-              value.toString(),
-              style: TextStyle(
-                fontSize: 18,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          TweenAnimationBuilder<int>(
+            tween: IntTween(begin: 0, end: targetValue),
+            duration: const Duration(seconds: 2),
+            builder: (context, value, child) {
+              return Text(
+                value.toString(),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  /// Toggle Button Widget
   Widget _buildToggleButton(String title, int index) {
-    return GestureDetector(
-      onTap: () {
-        controller.selectedTab.value = index;
-        // You can also call API/update UI based on selection
-      },
-      child: Container(
-        width: SizingConfig.width(0.25),
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: controller.selectedTab.value == index
-              ? AppColors.primaryColor
-              : Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: AppColors.primaryColor,
+    return Obx(() {
+      final isSelected = controller.selectedTab.value == index;
+
+      return GestureDetector(
+        onTap: () {
+          controller.selectedTab.value = index;
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primaryColor : Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.primaryColor),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: isSelected ? Colors.white : AppColors.primaryColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        alignment: Alignment.center,
-        child: Text(
-          title,
-          style: TextStyle(
-            color: controller.selectedTab.value == index
-                ? Colors.white
-                : AppColors.primaryColor,
-            fontWeight: FontWeight.w600,
+      );
+    });
+  }
+}
+
+/// Day chart
+
+class DayChart extends StatelessWidget {
+  final List<double> values = [8, 10, 14, 15, 13, 10, 16];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: values.length * 40 + 60, // Responsive height
+      child: BarChart(
+        BarChartData(
+          maxY: 20,
+          barTouchData: BarTouchData(
+            enabled: true,
+            touchTooltipData: BarTouchTooltipData(
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                return BarTooltipItem(
+                  rod.toY.toString(),
+                  const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
           ),
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 30,
+                getTitlesWidget: (value, _) => Text(
+                  value.toInt().toString(),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+            ),
+            rightTitles: AxisTitles(),
+            topTitles: AxisTitles(),
+            bottomTitles: AxisTitles(), // no labels on bottom
+          ),
+          gridData: FlGridData(show: false),
+          borderData: FlBorderData(show: false),
+          barGroups: List.generate(values.length, (index) {
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: values[index],
+                  width: 20,
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: const LinearGradient(
+                    colors: [Colors.teal, Colors.lightBlueAccent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
   }
 }
+
+/// Week Chart
+class WeekChart extends StatelessWidget {
+  final List<double> values = [12, 18, 14, 10, 16, 12, 8];
+  final List<String> labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: BarChart(
+        BarChartData(
+          maxY: 25,
+          barTouchData: BarTouchData(enabled: true),
+          gridData: FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 30,
+                getTitlesWidget: (value, _) => Text('${value.toInt()}'),
+              ),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, _) {
+                  int index = value.toInt();
+                  if (index >= 0 && index < labels.length) {
+                    return Text(
+                      labels[index],
+                      style: const TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
+            topTitles: AxisTitles(),
+            rightTitles: AxisTitles(),
+          ),
+          barGroups: List.generate(values.length, (index) {
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: values[index],
+                  width: 16,
+                  borderRadius: BorderRadius.circular(6),
+                  gradient: const LinearGradient(
+                    colors: [Colors.teal, Colors.lightBlueAccent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+/// Month chart
+class MonthChart extends StatelessWidget {
+  final List<double> values = [60, 85, 70, 90];
+  final List<String> labels = ['W1', 'W2', 'W3', 'W4'];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: BarChart(
+        BarChartData(
+          maxY: 100,
+          barTouchData: BarTouchData(enabled: true),
+          gridData: FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, _) => Text('${value.toInt()}'),
+              ),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, _) {
+                  int index = value.toInt();
+                  if (index >= 0 && index < labels.length) {
+                    return Text(labels[index]);
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
+            topTitles: AxisTitles(),
+            rightTitles: AxisTitles(),
+          ),
+          barGroups: List.generate(values.length, (index) {
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: values[index],
+                  width: 16,
+                  borderRadius: BorderRadius.circular(6),
+                  gradient: const LinearGradient(
+                    colors: [Colors.teal, Colors.lightBlueAccent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+
+

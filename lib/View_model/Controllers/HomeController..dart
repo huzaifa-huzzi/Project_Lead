@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
-  // For animtions...later on they will be replaced with the real values
+  // For animtions..
   var total = 128.obs;
   var daily = 24.obs;
   var weekly = 84.obs;
@@ -17,6 +17,8 @@ class HomeController extends GetxController {
 
   // For the graphs
   var selectedTab = 0.obs; // for the tabulars
+
+
 
 
 

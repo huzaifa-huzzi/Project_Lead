@@ -210,8 +210,28 @@ class DayChart extends StatelessWidget {
             topTitles: AxisTitles(),
             bottomTitles: AxisTitles(), // no labels on bottom
           ),
-          gridData: FlGridData(show: false),
-          borderData: FlBorderData(show: false),
+
+          /// ✅ Enable grid lines here:
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: false,
+            drawHorizontalLine: true,
+            horizontalInterval: 5,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: Colors.grey.withOpacity(0.3),
+              strokeWidth: 1,
+            ),
+          ),
+
+          /// ✅ Optional border
+          borderData: FlBorderData(
+            show: true,
+            border: const Border(
+              left: BorderSide(color: Colors.grey, width: 1),
+              bottom: BorderSide(color: Colors.grey, width: 1),
+            ),
+          ),
+
           barGroups: List.generate(values.length, (index) {
             return BarChartGroupData(
               x: index,
@@ -238,7 +258,9 @@ class DayChart extends StatelessWidget {
 /// Week Chart
 class WeekChart extends StatelessWidget {
   final List<double> values = [12, 18, 14, 10, 16, 12, 8];
-  final List<String> labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  final List<String> labels = [
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +270,23 @@ class WeekChart extends StatelessWidget {
         BarChartData(
           maxY: 25,
           barTouchData: BarTouchData(enabled: true),
-          gridData: FlGridData(show: false),
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: false,
+            drawHorizontalLine: true,
+            horizontalInterval: 5,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: Colors.grey.withOpacity(0.3),
+              strokeWidth: 1,
+            ),
+          ),
+          borderData: FlBorderData(
+            show: true,
+            border: const Border(
+              left: BorderSide(color: Colors.grey, width: 1),
+              bottom: BorderSide(color: Colors.grey, width: 1),
+            ),
+          ),
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
@@ -299,6 +337,7 @@ class WeekChart extends StatelessWidget {
   }
 }
 
+
 /// Month chart
 class MonthChart extends StatelessWidget {
   final List<double> values = [60, 85, 70, 90];
@@ -312,11 +351,28 @@ class MonthChart extends StatelessWidget {
         BarChartData(
           maxY: 100,
           barTouchData: BarTouchData(enabled: true),
-          gridData: FlGridData(show: false),
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: false,
+            drawHorizontalLine: true,
+            horizontalInterval: 20,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: Colors.grey.withOpacity(0.3),
+              strokeWidth: 1,
+            ),
+          ),
+          borderData: FlBorderData(
+            show: true,
+            border: const Border(
+              left: BorderSide(color: Colors.grey, width: 1),
+              bottom: BorderSide(color: Colors.grey, width: 1),
+            ),
+          ),
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
+                reservedSize: 30,
                 getTitlesWidget: (value, _) => Text('${value.toInt()}'),
               ),
             ),
@@ -357,6 +413,7 @@ class MonthChart extends StatelessWidget {
     );
   }
 }
+
 
 
 

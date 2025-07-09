@@ -26,16 +26,6 @@ class FormFillingButtonWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         PrimaryBtn(
-          title: 'Clear',
-          onTap: () {
-            _formKey.currentState?.reset();
-            controller.clearForm();
-          },
-          loading: controller.loading.value,
-          color: const Color(0xff515a65),
-        ),
-        const SizedBox(height: 16),
-        PrimaryBtn(
           title: 'Submit',
           onTap: () {
             if (_formKey.currentState!.validate()) {
@@ -50,18 +40,6 @@ class FormFillingButtonWidget extends StatelessWidget {
         : Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: SizingConfig.width(0.15),
-          child: PrimaryBtn(
-            title: 'Clear',
-            onTap: () {
-              _formKey.currentState?.reset();
-              controller.clearForm();
-            },
-            loading: controller.loading.value,
-            color: const Color(0xff515a65),
-          ),
-        ),
         SizedBox(width: SizingConfig.width(0.02)),
         SizedBox(
           width: SizingConfig.width(0.15),

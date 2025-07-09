@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:project_x/View/Form/Widgets/FormFillingButtonWidgets.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
@@ -20,210 +19,207 @@ class FormFilling extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /// Title & Icon
-                       Row(
-                         children: [
-                           Icon(
-                             FeatherIcons.key,
-                             size: 24,
-                           ),
-                           SizedBox(width: SizingConfig.width(0.03)),
-                           Text(
-                             "Form",
-                             style: TextStyle(
-                               fontWeight: FontWeight.bold,
-                               fontSize: 24,
-                             ),
-                           ),
-                         ],
-                       ),
-
-
-                      SizedBox(height: SizingConfig.height(0.03)),
-
-                      /// Personal Information
-                      sectionTitle("Personal Information",),
-                      SizedBox(height: SizingConfig.height(0.03)),
-                      buildWrap([
-                        TextInputForm(
-                          myController: controller.nameController,
-                          focusNode: controller.nameFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.name,
-                          hint: 'Name',
-                          iconData: Icons.person_outline,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter name' : null,
-                        ),
-                        TextInputForm(
-                          myController: controller.emailController,
-                          focusNode: controller.emailFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.emailAddress,
-                          hint: 'Email',
-                          iconData: Icons.email_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter email' : null,
-                        ),
-                      ], isMobile),
-
-                      SizedBox(height: SizingConfig.height(0.03)),
-
-                      /// Contact Information
-                      sectionTitle("Contact Information"),
-                      SizedBox(height: SizingConfig.height(0.03)),
-                      buildWrap([
-                        IntlPhoneField(
-                          decoration: InputDecoration(
-                            labelText: 'Phone Number',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(),
-                            ),
+      backgroundColor: AppColors.screenColors,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Center(
+              child: Card(
+                elevation: 5,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// Title
+                          Row(
+                            children: const [
+                              Icon(FeatherIcons.key, size: 20),
+                              SizedBox(width: 12),
+                              Text(
+                                "Form",
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                              ),
+                            ],
                           ),
-                          initialCountryCode: 'AU',
-                          onChanged: (phone) {
-                            print(phone.completeNumber);
-                          },
-                        ),
-                        Obx(() => DropdownButtonFormField<String>(
-                          value: controller.phoneTypeController.value.isEmpty
-                              ? null
-                              : controller.phoneTypeController.value,
-                          decoration: InputDecoration(
-                            labelText: 'Phone Type',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                            prefixIcon: const Icon(Icons.phone_android),
-                          ),
-                          items: ['Personal', 'Business'].map((type) {
-                            return DropdownMenuItem(value: type, child: Text(type));
-                          }).toList(),
-                          onChanged: (value) => controller.phoneTypeController.value = value!,
-                          validator: (value) => value == null || value.isEmpty ? 'Select phone type' : null,
-                        )),
-                        TextInputForm(
-                          myController: controller.websiteController,
-                          focusNode: controller.websiteFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.url,
-                          hint: 'Website',
-                          iconData: Icons.web_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter website' : null,
-                        ),
-                        TextInputForm(
-                          myController: controller.addressController,
-                          focusNode: controller.addressFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.text,
-                          hint: 'Address',
-                          iconData: Icons.location_city_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter address' : null,
-                        ),
-                      ], isMobile),
+                          const SizedBox(height: 28),
 
-                      SizedBox(height: SizingConfig.height(0.03)),
+                          /// All Fields
+                          buildField("Category", true,
+                              child: Obx(() => DropdownButtonFormField<String>(
+                                value: controller.keywordCategory.value.isEmpty ? null : controller.keywordCategory.value,
+                                decoration: _inputDecoration("Select Category", Icons.category_outlined),
+                                items: controller.categories.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
+                                onChanged: (value) => controller.keywordCategory.value = value!,
+                                validator: (value) => value == null || value.isEmpty ? 'Select category' : null,
+                              ))),
 
-                      /// Location Information
-                      sectionTitle("Location Information"),
-                      SizedBox(height: SizingConfig.height(0.01)),
-                      buildWrap([
-                        Obx(() {
-                          final selected = controller.selectedSuburb.value;
+                          buildField("Title", true,
+                              child: TextInputForm(
+                                myController: controller.keywordTitleController,
+                                hint: 'Title',
+                                iconData: Icons.title,
+                                focusNode: controller.keywordTitleFocusNode,
+                                keyBoardType: TextInputType.text,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter keyword title' : null,
+                              )),
 
+                          buildField("Name", true,
+                              child: TextInputForm(
+                                myController: controller.nameController,
+                                hint: 'Name',
+                                iconData: Icons.person,
+                                focusNode: controller.nameFocusNode,
+                                keyBoardType: TextInputType.name,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter name' : null,
+                              )),
 
-                          final isValid = controller.suburbs.contains(selected);
-                          final dropdownValue = isValid ? selected : null;
+                          buildField("Email", true,
+                              child: TextInputForm(
+                                myController: controller.emailController,
+                                hint: 'Email',
+                                iconData: Icons.email_outlined,
+                                focusNode: controller.emailFocusNode,
+                                keyBoardType: TextInputType.emailAddress,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter email' : null,
+                              )),
 
-                          return DropdownButtonFormField<String>(
-                            value: dropdownValue,
-                            decoration: InputDecoration(
-                              labelText: 'Select Suburb',
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                              prefixIcon: const Icon(Icons.location_on_outlined),
-                            ),
-                            items: controller.suburbs.toSet().map((suburb) {
-                              return DropdownMenuItem<String>(
-                                value: suburb,
-                                child: Text(suburb),
-                              );
-                            }).toList(),
-                            onChanged: (value) => controller.selectedSuburb.value = value!,
-                            validator: (value) => value == null || value.isEmpty ? 'Select suburb' : null,
-                          );
-                        }),
+                          buildField("Phone Number", true,
+                              child: TextInputForm(
+                                myController: controller.phoneNumberController,
+                                hint: 'Phone Number',
+                                iconData: Icons.phone,
+                                focusNode: controller.phoneNumberFocusNode,
+                                keyBoardType: TextInputType.phone,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter phone' : null,
+                              )),
 
-                        TextInputForm(
-                          myController: controller.stateController,
-                          focusNode: controller.stateFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.text,
-                          hint: 'State',
-                          iconData: Icons.map_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter state' : null,
-                        ),
-                        TextInputForm(
-                          myController: controller.countryController,
-                          focusNode: controller.countryFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.text,
-                          hint: 'Country',
-                          iconData: Icons.flag_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter country' : null,
-                        ),
-                        TextInputForm(
-                          myController: controller.zipcodeController,
-                          focusNode: controller.zipcodeFocusNode,
-                          onFieldSubmittedView: (_) {},
-                          keyBoardType: TextInputType.number,
-                          hint: 'Zip Code',
-                          iconData: Icons.home_outlined,
-                          onValidator: (value) => value!.isEmpty ? 'Please enter zip code' : null,
-                        ),
-                      ], isMobile),
+                          buildField("Phone Type", true,
+                              child: Obx(() => DropdownButtonFormField<String>(
+                                value: controller.phoneTypeController.value.isEmpty ? null : controller.phoneTypeController.value,
+                                decoration: _inputDecoration("Select Phone Type", Icons.phone_android),
+                                items: controller.phoneTypes.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
+                                onChanged: (value) => controller.phoneTypeController.value = value!,
+                                validator: (value) => value == null || value.isEmpty ? 'Select phone type' : null,
+                              ))),
 
-                      SizedBox(height: SizingConfig.height(0.04)),
+                          buildField("Website", true,
+                              child: TextInputForm(
+                                myController: controller.websiteController,
+                                hint: 'Website',
+                                iconData: Icons.web,
+                                focusNode: controller.websiteFocusNode,
+                                keyBoardType: TextInputType.url,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter website' : null,
+                              )),
 
-                      /// Submit Button
-                      FormFillingButtonWidget(formKey: _formKey, controller: controller)
-                    ],
+                          buildField("Zip Code", true,
+                              child: TextInputForm(
+                                myController: controller.zipcodeController,
+                                hint: 'Zip Code',
+                                iconData: Icons.home,
+                                focusNode: controller.zipcodeFocusNode,
+                                keyBoardType: TextInputType.number,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter zip code' : null,
+                              )),
+
+                          buildField("Suburb", true,
+                              child: TextInputForm(
+                                myController: controller.suburbController,
+                                hint: 'Suburb',
+                                iconData: Icons.location_city,
+                                focusNode: controller.suburbFocusNode,
+                                keyBoardType: TextInputType.text,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter suburb' : null,
+                              )),
+
+                          buildField("City", true,
+                              child: Obx(() => DropdownButtonFormField<String>(
+                                value: controller.cityController.value.isEmpty ? null : controller.cityController.value,
+                                decoration: _inputDecoration("Select City", Icons.location_city_outlined),
+                                items: controller.cities.map((city) => DropdownMenuItem(value: city, child: Text(city))).toList(),
+                                onChanged: (value) => controller.cityController.value = value!,
+                                validator: (value) => value == null || value.isEmpty ? 'Select city' : null,
+                              ))),
+
+                          buildField("State", true,
+                              child: Obx(() => DropdownButtonFormField<String>(
+                                value: controller.selectedSuburb.value.isEmpty ? null : controller.selectedSuburb.value,
+                                decoration: _inputDecoration("Select State", Icons.map_outlined),
+                                items: controller.suburbs.map((state) => DropdownMenuItem(value: state, child: Text(state))).toList(),
+                                onChanged: (value) => controller.selectedSuburb.value = value!,
+                                validator: (value) => value == null || value.isEmpty ? 'Select state' : null,
+                              ))),
+
+                          buildField("Complete Address", true,
+                              child: TextInputForm(
+                                myController: controller.addressController,
+                                hint: 'Address',
+                                iconData: Icons.location_on_outlined,
+                                focusNode: controller.addressFocusNode,
+                                keyBoardType: TextInputType.text,
+                                onFieldSubmittedView: (_) {},
+                                onValidator: (value) => value!.isEmpty ? 'Enter address' : null,
+                              )),
+
+                          const SizedBox(height: 30),
+                          FormFillingButtonWidget(formKey: _formKey, controller: controller),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
+    );
+  }
+
+
+  Widget buildField(String label, bool isMobile, {required Widget child}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: SizedBox(
+        width: isMobile ? double.infinity : 500,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 8),
+            child,
+          ],
+        ),
       ),
     );
   }
 
-  Widget sectionTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
 
-  Widget buildWrap(List<Widget> children, bool isMobile) {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 16,
-      children: children.map((e) => SizedBox(width: isMobile ? double.infinity : 350, child: e)).toList(),
+  InputDecoration _inputDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      prefixIcon: Icon(icon),
     );
   }
 }

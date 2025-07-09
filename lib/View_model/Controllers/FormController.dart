@@ -11,12 +11,16 @@ class FormController extends GetxController {
   final suburbController = TextEditingController();
   final stateController = TextEditingController();
   final websiteController = TextEditingController();
-  final phoneTypeController = ''.obs;
+  final keywordTitleController = TextEditingController();
+  final statusController = TextEditingController(text: 'Open');
 
-  /// Loading indicator
+  final phoneTypeController = ''.obs;
+  final keywordCategory = ''.obs;
+  final cityController = ''.obs;
+  final selectedSuburb = ''.obs;
+
   Rx<bool> loading = false.obs;
 
-  /// FocusNodes
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
@@ -26,9 +30,7 @@ class FormController extends GetxController {
   final suburbFocusNode = FocusNode();
   final stateFocusNode = FocusNode();
   final websiteFocusNode = FocusNode();
-
-  /// Dropdown for the suburbs
-  var selectedSuburb = ''.obs;
+  final keywordTitleFocusNode = FocusNode();
 
   final List<String> suburbs = [
     'Sydney',
@@ -42,10 +44,31 @@ class FormController extends GetxController {
     'North Sydney'
   ];
 
-  /// Dispose all controllers and focus nodes
+  final List<String> states = [
+    'New South Wales',
+    'Victoria',
+    'Queensland',
+    'South Australia'
+  ];
+
+  final List<String> cities = [
+    'Lahore',
+    'Karachi',
+    'Islamabad'
+  ];
+
+  final List<String> categories = [
+    'Hospitality',
+    'Construction'
+  ];
+
+  final List<String> phoneTypes = [
+    'Personal',
+    'Business'
+  ];
+
   @override
   void onClose() {
-
     nameController.dispose();
     emailController.dispose();
     addressController.dispose();
@@ -55,6 +78,9 @@ class FormController extends GetxController {
     suburbController.dispose();
     stateController.dispose();
     websiteController.dispose();
+    keywordTitleController.dispose();
+    statusController.dispose();
+
     nameFocusNode.dispose();
     emailFocusNode.dispose();
     addressFocusNode.dispose();
@@ -64,11 +90,11 @@ class FormController extends GetxController {
     suburbFocusNode.dispose();
     stateFocusNode.dispose();
     websiteFocusNode.dispose();
+    keywordTitleFocusNode.dispose();
 
     super.onClose();
   }
 
-  /// Clear all the form
   void clearForm() {
     nameController.clear();
     emailController.clear();
@@ -79,8 +105,12 @@ class FormController extends GetxController {
     suburbController.clear();
     stateController.clear();
     websiteController.clear();
+    keywordTitleController.clear();
+    statusController.clear();
+
     phoneTypeController.value = '';
+    keywordCategory.value = '';
+    cityController.value = '';
     selectedSuburb.value = '';
   }
-
 }

@@ -41,6 +41,15 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: SizingConfig.height(0.1)),
 
             /// Stat Cards
+            Text(
+              "Forms Submitted",
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textColor,
+              ),
+            ),
+            SizedBox(height: SizingConfig.height(0.03)),
             Wrap(
               spacing: 30,
               runSpacing: 16,
@@ -56,7 +65,7 @@ class HomeScreen extends StatelessWidget {
 
             /// Toggle Buttons
             Text(
-              "Analysis",
+              "Analysis Charts",
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
@@ -120,7 +129,7 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: SizingConfig.height(0.03)),
           TweenAnimationBuilder<int>(
             tween: IntTween(begin: 0, end: targetValue),
             duration: const Duration(seconds: 2),
@@ -171,89 +180,109 @@ class HomeScreen extends StatelessWidget {
 
 /// Day chart
 
+
 class DayChart extends StatelessWidget {
-  final List<double> values = [8, 10, 14, 15, 13, 10, 16];
+  final double barValue = 12;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: values.length * 40 + 60, // Responsive height
-      child: BarChart(
-        BarChartData(
-          maxY: 20,
-          barTouchData: BarTouchData(
-            enabled: true,
-            touchTooltipData: BarTouchTooltipData(
-              getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                return BarTooltipItem(
-                  rod.toY.toString(),
-                  const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+    return Center(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            height: 250,
+            width: 120,
+            child: BarChart(
+              BarChartData(
+                maxY: 20,
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: 5,
+                      getTitlesWidget: (value, _) => Text(
+                        value.toInt().toString(),
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
                   ),
-                );
-              },
+                  rightTitles: AxisTitles(),
+                  topTitles: AxisTitles(),
+                  bottomTitles: AxisTitles(),
+                ),
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: false,
+                  drawHorizontalLine: true,
+                  horizontalInterval: 5,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                    color: Colors.grey.withOpacity(0.3),
+                    strokeWidth: 2,
+                  ),
+                ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: const Border(
+                    left: BorderSide(color: Colors.grey),
+                    bottom: BorderSide(color: Colors.grey),
+                  ),
+                ),
+                barGroups: [
+                  BarChartGroupData(
+                    x: 0,
+                    barRods: [
+                      BarChartRodData(
+                        toY: barValue,
+                        width: 30,
+                        borderRadius: BorderRadius.circular(6),
+                        gradient: const LinearGradient(
+                          colors: [Colors.teal, Colors.lightBlueAccent],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                barTouchData: BarTouchData(enabled: false),
+              ),
             ),
           ),
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 30,
-                getTitlesWidget: (value, _) => Text(
-                  value.toInt().toString(),
-                  style: const TextStyle(fontSize: 12),
+
+          /// Positioned value above bar
+          Positioned(
+            top: _calculateTopPosition(barValue),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.75), // Tooltip background
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                '$barValue',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            rightTitles: AxisTitles(),
-            topTitles: AxisTitles(),
-            bottomTitles: AxisTitles(), // no labels on bottom
           ),
-
-          /// ✅ Enable grid lines here:
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            drawHorizontalLine: true,
-            horizontalInterval: 5,
-            getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.grey.withOpacity(0.3),
-              strokeWidth: 1,
-            ),
-          ),
-
-          /// ✅ Optional border
-          borderData: FlBorderData(
-            show: true,
-            border: const Border(
-              left: BorderSide(color: Colors.grey, width: 1),
-              bottom: BorderSide(color: Colors.grey, width: 1),
-            ),
-          ),
-
-          barGroups: List.generate(values.length, (index) {
-            return BarChartGroupData(
-              x: index,
-              barRods: [
-                BarChartRodData(
-                  toY: values[index],
-                  width: 20,
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: const LinearGradient(
-                    colors: [Colors.teal, Colors.lightBlueAccent],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
-              ],
-            );
-          }),
-        ),
+        ],
       ),
     );
   }
+
+  double _calculateTopPosition(double value) {
+    // Adjust this multiplier based on maxY and widget height
+    double chartHeight = 250;
+    double maxY = 20;
+    double paddingTop = 30;
+
+    return (chartHeight - (value / maxY * chartHeight)) - 40 + paddingTop;
+  }
 }
+
 
 /// Week Chart
 class WeekChart extends StatelessWidget {

@@ -13,18 +13,27 @@ class PrimaryBtn extends StatelessWidget {
     required this.onTap,
     required this.loading,
     required this.color,
-
   });
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    double buttonWidth;
+    if (screenWidth < 600) {
+      buttonWidth = screenWidth * 0.9;
+    } else if (screenWidth < 1000) {
+      buttonWidth = screenWidth * 0.5;
+    } else {
+      buttonWidth = screenWidth * 0.2;
+    }
 
     return InkWell(
       onTap: loading ? null : onTap,
+      borderRadius: BorderRadius.circular(10),
       child: Container(
-        width: width * 0.09,
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        width: buttonWidth,
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: color,

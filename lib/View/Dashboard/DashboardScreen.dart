@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import 'package:project_x/View/Form/Form.dart';
 import 'package:project_x/View/Home/HomeScreen.dart';
+import 'package:project_x/View/Verify/VerifyScreen.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/DashboardController.dart';
 
@@ -14,11 +15,13 @@ class DashboardScreen extends StatelessWidget {
   final List<Widget> _screens = [
     HomeScreen(),
     FormFilling(),
+    VerifyScreen(),
   ];
 
   final List<Map<String, dynamic>> menuItems = [
     {'icon': Icons.home, 'label': 'Dashboard'},
     {'icon': Icons.description, 'label': 'Form'},
+    {'icon': Icons.verified_user ,'label' : 'Verify form'}
   ];
 
   Widget buildSidebar(bool isDrawer, BuildContext context, double screenWidth) {
@@ -115,6 +118,7 @@ class DashboardScreen extends StatelessWidget {
     });
   }
 
+  /// AppBar Widgets
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;

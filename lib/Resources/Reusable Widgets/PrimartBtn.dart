@@ -35,7 +35,7 @@ class PrimaryBtn extends StatelessWidget {
         width: buttonWidth,
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 14),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
           color: color,
         ),
         alignment: Alignment.center,

@@ -5,7 +5,6 @@ import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/HomeController..dart';
 import 'package:fl_chart/fl_chart.dart';
 
-/// Widgets not done
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -179,6 +178,8 @@ class HomeScreen extends StatelessWidget {
     });
   }
 }
+
+
 
 /// Day chart
 

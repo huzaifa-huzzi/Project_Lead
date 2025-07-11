@@ -13,6 +13,7 @@ class AppColors {
   static const Color appBarColors = Color(0xFFFEFEFE);
   static const Color sidebarColor =  Color(0xFFFFFFFF);
   static const Color screenColors =  Color(0xFFF5F5F5);
+  static const Color loginScreenCardColor = Color(0xFFEef1F5);
   static const Color sidebarTextColor =  Color(0xFF939A9F);
   static const Color primaryColor = Color(0xFF0F62FE);
   static const Color secondaryColor = Color(0xFF2979FF);

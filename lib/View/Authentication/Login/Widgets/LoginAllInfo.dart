@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../Resources/Reusable Widgets/RoundedButton.dart';
-import '../../../../Resources/Reusable Widgets/Sizing of Screen.dart';
+import 'package:project_x/Resources/Colors/Colors.dart';
+import 'package:project_x/Resources/Reusable%20Widgets/PrimartBtn.dart';
+import 'package:project_x/View/Dashboard/DashboardScreen.dart';
 import '../../../../Resources/Reusable Widgets/TextInputForm/TextInputForm.dart';
-import '../../../../Utils/Utils.dart';
 import '../../../../View_model/Controllers/LoginController.dart';
-import '../../../Dashboard/DashboardScreen.dart';
-
-
-
 
 class LoginAllInfo extends StatelessWidget {
   const LoginAllInfo({
@@ -22,75 +18,74 @@ class LoginAllInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizingConfig.init(context);
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Email Label
+            const Text(
+              'Email',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+
+            /// Email Field
             TextInputForm(
-              myController: controller.usernameController,
-              focusNode: controller.usernameFocus,
+              myController: controller.emailController,
+              focusNode: controller.emailFocus,
+              hint: 'Enter your email',
+              iconData: Icons.email_outlined,
+              keyBoardType: TextInputType.emailAddress,
               onFieldSubmittedView: (value) {
-                Utils.fieldFocusChange(
-                  context,
-                  controller.usernameFocus,
-                  controller.passwordFocus,
-                );
+                FocusScope.of(context).requestFocus(controller.passwordFocus);
               },
-              keyBoardType: TextInputType.text,
-              hint: 'Username',
-              iconData: Icons.person_outline,
               onValidator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter username';
+                  return 'Please enter your email';
                 }
                 return null;
               },
             ),
-            SizedBox(height: SizingConfig.height(0.02)),
+
+            const SizedBox(height: 20),
+
+            /// Password Label
+            const Text(
+              'Password',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+
+            /// Password Field
             TextInputForm(
               myController: controller.passwordController,
               focusNode: controller.passwordFocus,
-              onFieldSubmittedView: (value) {
-                Utils.fieldFocusChange(
-                  context,
-                  controller.passwordFocus,
-                  controller.usernameFocus,
-                );
-              },
-              keyBoardType: TextInputType.text,
-              hint: 'Password',
+              hint: 'Enter your password',
               iconData: Icons.lock_outline,
+              keyBoardType: TextInputType.visiblePassword,
+              onFieldSubmittedView: (value) {
+                FocusScope.of(context).unfocus();
+              },
               onValidator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter password';
+                  return 'Please enter your password';
                 }
                 return null;
               },
             ),
-            SizedBox(height: SizingConfig.height(0.1)),
+
+            const SizedBox(height: 40),
 
             /// Login Button
-            Obx(
-                  () => Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 20,
-                ),
-                child: RoundedButton(
-                  title: 'Login',
-                  loading: controller.loading.value,
-                  onTap: () {
-                    controller.loading.value = true;
-                    Get.to(DashboardScreen());
-                    controller.loading.value = false;
-                  },
-                ),
-              ),
-            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 37),
+              child: PrimaryBtn(title: 'Login', onTap: (){
+                Get.to(() => DashboardScreen());
+              }, loading:controller.loading.value, color: AppColors.primaryColor),
+            )
           ],
         ),
       ),

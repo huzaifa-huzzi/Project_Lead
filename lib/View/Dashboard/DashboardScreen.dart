@@ -49,18 +49,6 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            SizedBox(height: SizingConfig.height(0.03)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.03)),
-              child: const Text(
-                "DASHBOARD",
-                style: TextStyle(
-                  color: AppColors.sidebarTextColor,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             SizedBox(height: SizingConfig.height(0.01)),
             ...List.generate(menuItems.length, (index) {
               final isSelected = controller.selectedIndex.value == index;

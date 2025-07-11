@@ -28,8 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
           return Center(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              padding: const EdgeInsets.all(16),
+              margin: EdgeInsets.symmetric(
+                horizontal: SizingConfig.width(0.02),
+                vertical: SizingConfig.height(0.03),
+              ),
+              padding: EdgeInsets.all(SizingConfig.width(0.02)),
               decoration: BoxDecoration(
                 color: AppColors.loginScreenCardColor,
                 borderRadius: BorderRadius.circular(16),
@@ -49,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(SizingConfig.width(0.02)),
                       child: Image.asset(
                         'assets/images/login-pic.png',
                         fit: BoxFit.contain,
@@ -61,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.03)),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -74,13 +77,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: SizingConfig.height(0.005)),
                           const Text(
                             "Login your account",
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: SizingConfig.height(0.025)),
                           LoginAllInfo(formKey: _formKey, controller: controller),
                         ],
                       ),
@@ -93,24 +96,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     /// Top Image for Mobile
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.only(bottom: SizingConfig.height(0.02)),
                       child: Image.asset(
                         'assets/images/login-pic.png',
-                        height: 180,
+                        height: SizingConfig.height(0.22),
                       ),
                     ),
-
                     const Text(
                       "Welcome",
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: SizingConfig.height(0.005)),
                     const Text("Login your account", style: TextStyle(fontSize: 14)),
-                    const SizedBox(height: 20),
+                    SizedBox(height: SizingConfig.height(0.025)),
 
                     /// Login Form
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: SizingConfig.width(0.05)),
                       child: LoginAllInfo(formKey: _formKey, controller: controller),
                     ),
                   ],

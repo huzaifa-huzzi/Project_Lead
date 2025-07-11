@@ -21,7 +21,6 @@ class LoginAllInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     SizingConfig.init(context);
 
-    // Common field + button max width
     const double fieldMaxWidth = 450;
 
     return Form(

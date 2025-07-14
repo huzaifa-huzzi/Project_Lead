@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
 import '../../Resources/Reusable Widgets/Sizing of Screen.dart';
 import '../../View_model/Controllers/HomeController..dart';
@@ -90,13 +91,148 @@ class HomeScreen extends StatelessWidget {
             Obx(() {
               switch (controller.selectedTab.value) {
                 case 0:
-                  return DayChart();
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 16),
+
+                      /// Date Selection Row
+                      Obx(() => Row(
+                        children: [
+                          Icon(Icons.calendar_today, size: 20, color: AppColors.primaryColor),
+                          SizedBox(width: SizingConfig.width(0.01)),
+                          Text(
+                            DateFormat('MMMM dd, yyyy').format(controller.selectedDate.value),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            icon: Icon(Icons.edit_calendar_outlined, color: AppColors.primaryColor),
+                            onPressed: () => controller.pickDate(context),
+                          ),
+                        ],
+                      )),
+
+                      SizedBox(height: SizingConfig.height(0.1)),
+
+                      /// Show DayChart with form count of selected date
+                      Obx(() {
+                        final value = controller.getFormCountForSelectedDate().toDouble();
+                        return DayChart(barValue: value);
+                      }),
+                    ],
+                  );
+
                 case 1:
-                  return WeekChart();
+                  return Obx(() {
+                    final start = controller.selectedWeekStartDate.value;
+                    final end = controller.selectedWeekDates.last;
+
+                    final rangeText =
+                        "${DateFormat('dd MMM').format(start)} - ${DateFormat('dd MMM yyyy').format(end)}";
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Week Range Display
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_today, size: 20, color: AppColors.primaryColor),
+                            SizedBox(width: SizingConfig.width(0.02)),
+                            Text(
+                              rangeText,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: AppColors.textColor,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.edit_calendar_outlined, color: AppColors.primaryColor),
+                              onPressed: () => controller.pickWeekDate(context),
+                            ),
+                          ],
+                        ),
+
+                        /// Space before chart
+                        SizedBox(height: SizingConfig.height(0.05)),
+
+                        /// Week Chart with data and labels
+                        Obx(() => WeekChart(
+                          values: controller.getWeekFormCounts().map((e) => e.toDouble()).toList(),
+                          labels: controller.selectedWeekDates
+                              .map((d) => DateFormat('E').format(d))
+                              .toList(),
+                        )),
+                      ],
+                    );
+                  });
+
                 case 2:
-                  return MonthChart();
-                default:
-                  return const SizedBox.shrink();
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Month Toggle and Year Picker Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() => ToggleButtons(
+                            isSelected: [
+                              controller.isFirstHalf.value,
+                              !controller.isFirstHalf.value,
+                            ],
+                            onPressed: (index) {
+                              controller.toggleHalf(index == 0);
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            selectedColor: Colors.white,
+                            fillColor: AppColors.primaryColor,
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                child: Text("Jan - Jun"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                child: Text("Jul - Dec"),
+                              ),
+                            ],
+                          )),
+                          Obx(() => Row(
+                            children: [
+                              Text(
+                                "${controller.selectedYear.value}",
+                                style: TextStyle(fontSize: 16, color: AppColors.textColor),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.calendar_today_outlined),
+                                onPressed: () => controller.pickYear(context),
+                              ),
+                            ],
+                          )),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// Chart with values based on toggle + year
+                      Obx(() {
+                        final isFirstHalf = controller.isFirstHalf.value;
+                        final values = controller.getHalfYearlyMonthlyData(isFirstHalf: isFirstHalf);
+                        final labels = controller.getHalfYearMonthLabels(isFirstHalf: isFirstHalf);
+                        return MonthChart(values: values, labels: labels);
+                      }),
+                    ],
+                  );
+
+
+
+                default:return const SizedBox.shrink();
               }
             }),
           ],
@@ -184,7 +320,8 @@ class HomeScreen extends StatelessWidget {
 /// Day chart
 
 class DayChart extends StatelessWidget {
-  final double barValue = 12;
+  final double barValue;
+  const DayChart({super.key, required this.barValue});
 
   @override
   Widget build(BuildContext context) {
@@ -192,113 +329,94 @@ class DayChart extends StatelessWidget {
       child: SizedBox(
         height: 250,
         width: 120,
-        child: Stack(
-          children: [
-            /// Bar Chart
-            BarChart(
-              BarChartData(
-                maxY: 20,
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      interval: 5,
-                      getTitlesWidget: (value, _) => Text(
-                        value.toInt().toString(),
-                        style: const TextStyle(fontSize: 12),
-                      ),
+        child: BarChart(
+          BarChartData(
+            maxY: 50,
+            barGroups: [
+              BarChartGroupData(
+                x: 0,
+                barRods: [
+                  BarChartRodData(
+                    toY: barValue,
+                    width: 30,
+                    borderRadius: BorderRadius.circular(6),
+                    gradient: const LinearGradient(
+                      colors: [Colors.teal, Colors.lightBlueAccent],
                     ),
-                  ),
-                  rightTitles: AxisTitles(),
-                  topTitles: AxisTitles(),
-                  bottomTitles: AxisTitles(),
-                ),
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  drawHorizontalLine: true,
-                  horizontalInterval: 5,
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 2,
-                  ),
-                ),
-                borderData: FlBorderData(
-                  show: true,
-                  border: const Border(
-                    left: BorderSide(color: Colors.grey),
-                    bottom: BorderSide(color: Colors.grey),
-                  ),
-                ),
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(
-                        toY: barValue,
-                        width: 30,
-                        borderRadius: BorderRadius.circular(6),
-                        gradient: const LinearGradient(
-                          colors: [Colors.teal, Colors.lightBlueAccent],
-                        ),
-                      ),
-                    ],
                   ),
                 ],
-                barTouchData: BarTouchData(enabled: false),
+                showingTooltipIndicators: [0],
+              ),
+            ],
+            barTouchData: BarTouchData(
+              enabled: false,
+              touchTooltipData: BarTouchTooltipData(
+                tooltipPadding: const EdgeInsets.all(6),
+                tooltipMargin: 8,
+                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                  return BarTooltipItem(
+                    barValue.toStringAsFixed(0),
+                    const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                },
               ),
             ),
-
-            /// Positioned label directly above the bar
-            Positioned(
-              top: _calculateTopPosition(barValue),
-              left: (155-40) /2,
-              child: Container(
-                width: 30,
-                alignment: Alignment.center,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.75),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    '$barValue',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 30,
+                  interval: 5,
+                  getTitlesWidget: (value, _) => Text(
+                    value.toInt().toString(),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ),
               ),
+              bottomTitles: AxisTitles(),
+              rightTitles: AxisTitles(),
+              topTitles: AxisTitles(),
             ),
-          ],
+            gridData: FlGridData(
+              show: true,
+              drawVerticalLine: false,
+              drawHorizontalLine: true,
+              horizontalInterval: 5,
+              getDrawingHorizontalLine: (value) => FlLine(
+                color: Colors.grey.withOpacity(0.3),
+                strokeWidth: 2,
+              ),
+            ),
+            borderData: FlBorderData(
+              show: true,
+              border: const Border(
+                left: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
-
-  double _calculateTopPosition(double value) {
-    double chartHeight = 250;
-    double maxY = 20;
-    double tooltipHeight = 30;
-
-    return (chartHeight - (value / maxY * chartHeight)) - tooltipHeight;
-  }
 }
 
-/// Week Chart
 
+/// Week Chart
 class WeekChart extends StatelessWidget {
-  final List<double> values = [12, 18, 14, 10, 16, 12, 8];
-  final List<String> labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final List<double> values;
+  final List<String> labels;
+
+  const WeekChart({super.key, required this.values, required this.labels});
 
   @override
   Widget build(BuildContext context) {
-    final double maxY = 25;
-    final double barWidth = 20;
+    final double maxY = (values.isNotEmpty) ? (values.reduce((a, b) => a > b ? a : b) + 5) : 10;
+    const double barWidth = 20;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -310,8 +428,8 @@ class WeekChart extends StatelessWidget {
             barTouchData: BarTouchData(
               enabled: false,
               touchTooltipData: BarTouchTooltipData(
-                tooltipPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 tooltipMargin: 8,
+                tooltipPadding: const EdgeInsets.all(6),
                 getTooltipItem: (group, groupIndex, rod, rodIndex) {
                   return BarTooltipItem(
                     values[groupIndex].toStringAsFixed(0),
@@ -323,7 +441,6 @@ class WeekChart extends StatelessWidget {
                   );
                 },
               ),
-              touchCallback: (event, response) {},
             ),
             gridData: FlGridData(
               show: true,
@@ -398,8 +515,14 @@ class WeekChart extends StatelessWidget {
 
 /// Month chart
 class MonthChart extends StatelessWidget {
-  final List<double> values = [60, 85, 70, 90];
-  final List<String> labels = ['W1', 'W2', 'W3', 'W4'];
+  final List<double> values;
+  final List<String> labels;
+
+  const MonthChart({
+    super.key,
+    required this.values,
+    required this.labels,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -429,7 +552,6 @@ class MonthChart extends StatelessWidget {
                   );
                 },
               ),
-              touchCallback: (_, __) {}, // Keeps tooltips working
             ),
             gridData: FlGridData(
               show: true,
@@ -443,8 +565,8 @@ class MonthChart extends StatelessWidget {
             borderData: FlBorderData(
               show: true,
               border: const Border(
-                left: BorderSide(color: Colors.grey, width: 1),
-                bottom: BorderSide(color: Colors.grey, width: 1),
+                left: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
               ),
             ),
             titlesData: FlTitlesData(
@@ -476,7 +598,7 @@ class MonthChart extends StatelessWidget {
             barGroups: List.generate(values.length, (index) {
               return BarChartGroupData(
                 x: index,
-                showingTooltipIndicators: [0], // Always show tooltip
+                showingTooltipIndicators: [0],
                 barRods: [
                   BarChartRodData(
                     toY: values[index],
@@ -497,6 +619,8 @@ class MonthChart extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

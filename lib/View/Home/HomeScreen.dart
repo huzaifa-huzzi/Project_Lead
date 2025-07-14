@@ -160,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                         ),
 
                         /// Space before chart
-                        SizedBox(height: SizingConfig.height(0.05)),
+                        SizedBox(height: SizingConfig.height(0.1)),
 
                         /// Week Chart with data and labels
                         Obx(() => WeekChart(
@@ -177,7 +177,6 @@ class HomeScreen extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Month Toggle and Year Picker Row
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -210,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                                 style: TextStyle(fontSize: 16, color: AppColors.textColor),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.calendar_today_outlined),
+                                icon: const Icon(Icons.calendar_today, size: 20, color: AppColors.primaryColor),
                                 onPressed: () => controller.pickYear(context),
                               ),
                             ],
@@ -218,9 +217,9 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: SizingConfig.height(0.1)),
 
-                      /// Chart with values based on toggle + year
+                      /// Chart with values + year
                       Obx(() {
                         final isFirstHalf = controller.isFirstHalf.value;
                         final values = controller.getHalfYearlyMonthlyData(isFirstHalf: isFirstHalf);

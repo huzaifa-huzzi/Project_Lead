@@ -146,7 +146,7 @@ class HomeController extends GetxController {
         data.add(0); // future month
       } else {
         final hash = '$selected-$i'.hashCode;
-        data.add((hash.abs() % 50 + 10).toDouble()); // Dummy data
+        data.add((hash.abs() % 50 + 10).toDouble());
       }
     }
 

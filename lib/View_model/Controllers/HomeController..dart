@@ -143,7 +143,7 @@ class HomeController extends GetxController {
 
     for (int i = start; i <= end; i++) {
       if (selected == now.year && i > currentMonth) {
-        data.add(0); // future month
+        data.add(0);
       } else {
         final hash = '$selected-$i'.hashCode;
         data.add((hash.abs() % 50 + 10).toDouble());
@@ -156,7 +156,7 @@ class HomeController extends GetxController {
 
   List<String> getHalfYearMonthLabels({required bool isFirstHalf}) {
     final start = isFirstHalf ? 1 : 7;
-    final end = isFirstHalf ? 6 : 12;
+    final end = isFirstHalf ? 6 : 12 ;
 
     return List.generate(end - start + 1, (index) {
       final month = start + index;

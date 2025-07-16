@@ -229,8 +229,6 @@ class HomeScreen extends StatelessWidget {
                     ],
                   );
 
-
-
                 default:return const SizedBox.shrink();
               }
             }),

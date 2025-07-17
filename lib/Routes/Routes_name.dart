@@ -1,9 +1,9 @@
 
 class RouteName {
 
-    // Authentication
+    /// Authentication
   static const String loginScreen = '/LoginScreen';
-  // view
+  /// Screens
   static const String dashboardScreen = '/DashboardScreen';
   static const String homeScreen = '/HomeScreen';
   static const String formsFillingScreen = '/FormFilling';

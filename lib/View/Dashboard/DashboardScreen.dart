@@ -35,7 +35,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ✅ Show logo only for tablet & mobile
+            //  Show logo only for tablet & mobile
             if (screenWidth < 1024)
               Padding(
                 padding: const EdgeInsets.only(left: 5.0),
@@ -134,7 +134,7 @@ class DashboardScreen extends StatelessWidget {
                     },
                   ),
                 ),
-              // ✅ Logo only in AppBar for Web
+              //  Logo only in AppBar for Web
               if (screenWidth >= 1024)
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),

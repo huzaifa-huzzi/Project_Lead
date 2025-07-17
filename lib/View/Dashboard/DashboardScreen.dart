@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_x/Resources/Colors/Colors.dart';
+import 'package:project_x/View/Authentication/Login/LoginScreen.dart';
 import 'package:project_x/View/Form/Form.dart';
 import 'package:project_x/View/Home/HomeScreen.dart';
 import 'package:project_x/View/Verify/VerifyScreen.dart';
@@ -153,7 +154,7 @@ class DashboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4.0),
                 child: PopupMenuButton<String>(
                   onSelected: (value) {
-                    // handle signout
+                    Get.to(LoginScreen());
                   },
                   itemBuilder: (context) => [
                     PopupMenuItem<String>(

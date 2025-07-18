@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:project_x/Resources/Theme.dart';
 import 'package:project_x/Routes/Routes_initiliazing.dart';
 import 'package:project_x/View/Authentication/Login/LoginScreen.dart';
-import 'package:project_x/View/Home/HomeScreen.dart';
 
 void main() {
   runApp(const MyApp());

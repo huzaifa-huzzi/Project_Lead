@@ -107,7 +107,6 @@ class FormController extends GetxController {
     websiteController.clear();
     keywordTitleController.clear();
     statusController.clear();
-
     phoneTypeController.value = '';
     keywordCategory.value = '';
     cityController.value = '';

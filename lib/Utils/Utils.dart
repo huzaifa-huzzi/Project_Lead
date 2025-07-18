@@ -4,14 +4,14 @@ import '../Resources/Colors/Colors.dart';
 
 class Utils {
 
-  // Focus for textFormField;
+  /// Focus for textFormField;
   static void fieldFocusChange(BuildContext context,FocusNode current,FocusNode nextFocus){
     current.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
 
-// success Snackbar
+/// success Snackbar
   static void showSuccessSnackbar(String title, String message) {
     Get.snackbar(
       title,
@@ -24,7 +24,7 @@ class Utils {
     );
   }
 
-  // Error Snackbar
+  /// Error Snackbar
   static void showErrorSnackbar(String title, String message) {
     Get.snackbar(
       title,

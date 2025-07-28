@@ -205,7 +205,7 @@ class FormFilling extends StatelessWidget {
                               value == null || value.isEmpty ? 'Select state' : null,
                             )),
                             label2: "",
-                            child2: const SizedBox(), // Empty field for spacing
+                            child2: const SizedBox(),
                           ),
 
                           buildField("Complete Address",

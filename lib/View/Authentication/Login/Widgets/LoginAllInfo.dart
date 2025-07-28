@@ -28,11 +28,11 @@ class LoginAllInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /// Email Label
+          /// username Label
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Email',
+              'Username',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -41,21 +41,21 @@ class LoginAllInfo extends StatelessWidget {
           ),
           SizedBox(height: SizingConfig.height(0.01)),
 
-          /// Email Field
+          /// username Field
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: fieldMaxWidth),
               child: TextInputForm(
                 myController: controller.emailController,
                 focusNode: controller.emailFocus,
-                hint: 'Enter your email',
-                iconData: Icons.email_outlined,
+                hint: 'Enter your username',
+                iconData: Icons.supervised_user_circle,
                 keyBoardType: TextInputType.emailAddress,
                 onFieldSubmittedView: (value) {
                   FocusScope.of(context).requestFocus(controller.passwordFocus);
                 },
                 onValidator: (value) {
-                  if (value!.isEmpty) return 'Please enter your email';
+                  if (value!.isEmpty) return 'Please enter your username';
                   return null;
                 },
               ),

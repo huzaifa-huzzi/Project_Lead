@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FormController extends GetxController {
+  /// Controllers
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final addressController = TextEditingController();
@@ -19,6 +20,7 @@ class FormController extends GetxController {
   final selectedSuburb = ''.obs;
   Rx<bool> loading = false.obs;
 
+  /// Focus Nodes
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final addressFocusNode = FocusNode();
@@ -30,6 +32,7 @@ class FormController extends GetxController {
   final websiteFocusNode = FocusNode();
   final keywordTitleFocusNode = FocusNode();
 
+  /// Strings
   final List<String> suburbs = [
     'Sydney',
     'Melbourne',

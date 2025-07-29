@@ -107,7 +107,7 @@ class DashboardScreen extends StatelessWidget {
     });
   }
 
-  /// AppBar Widgets
+  /// AppBar
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;

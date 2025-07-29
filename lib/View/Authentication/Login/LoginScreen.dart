@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: isLargeScreen
                   ? Row(
                 children: [
-                  /// 🖼 Left Side Image
+                  ///  Left Side Image
                   Expanded(
                     flex: 1,
                     child: Padding(
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  /// 📋 Right Side Form
+                  ///  Right Side Form
                   Expanded(
                     flex: 1,
                     child: Padding(

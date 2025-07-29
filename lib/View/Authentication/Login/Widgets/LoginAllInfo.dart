@@ -40,7 +40,6 @@ class LoginAllInfo extends StatelessWidget {
             ),
           ),
           SizedBox(height: SizingConfig.height(0.01)),
-
           /// username Field
           Center(
             child: ConstrainedBox(
@@ -61,9 +60,7 @@ class LoginAllInfo extends StatelessWidget {
               ),
             ),
           ),
-
           SizedBox(height: SizingConfig.height(0.03)),
-
           /// Password Label
           const Align(
             alignment: Alignment.centerLeft,
@@ -97,7 +94,6 @@ class LoginAllInfo extends StatelessWidget {
               ),
             ),
           ),
-
           SizedBox(height: SizingConfig.height(0.06)),
 
           /// Login Button

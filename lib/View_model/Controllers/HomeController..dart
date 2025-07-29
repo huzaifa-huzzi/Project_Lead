@@ -7,7 +7,6 @@ class HomeController extends GetxController {
   var daily = 24.obs;
   var weekly = 84.obs;
   var monthly = 300.obs;
-
   var selectedTab = 0.obs;
 
   /// For day chart
@@ -63,7 +62,7 @@ class HomeController extends GetxController {
     final start = selectedWeekStartDate.value;
     final today = DateTime.now();
 
-    // If it's a past week, include all 7 days
+
     final isPastWeek = today
         .difference(start)
         .inDays >= 6;
@@ -99,8 +98,7 @@ class HomeController extends GetxController {
   }
 
   void debugFormCount() {
-    print("🔍 selectedWeekDates: ${selectedWeekDates.map(normalizeDate)
-        .toList()}");
+    print("🔍 selectedWeekDates: ${selectedWeekDates.map(normalizeDate).toList()}");
     print("📊 dataKeys: ${formCountsByDate.keys}");
   }
 

@@ -106,7 +106,6 @@ class HomeController extends GetxController {
 
 
   /// Month chart
-
   var isFirstHalf = true.obs;
   var selectedYear = DateTime
       .now()

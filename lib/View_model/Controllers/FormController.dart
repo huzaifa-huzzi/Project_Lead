@@ -13,12 +13,10 @@ class FormController extends GetxController {
   final websiteController = TextEditingController();
   final keywordTitleController = TextEditingController();
   final statusController = TextEditingController(text: 'Open');
-
   final phoneTypeController = ''.obs;
   final keywordCategory = ''.obs;
   final cityController = ''.obs;
   final selectedSuburb = ''.obs;
-
   Rx<bool> loading = false.obs;
 
   final nameFocusNode = FocusNode();

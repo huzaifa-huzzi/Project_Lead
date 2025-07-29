@@ -24,7 +24,7 @@ class FormFilling extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Center(
             child: Card(
-              elevation: 5,
+              elevation: 7,
               color: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(

@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   : SingleChildScrollView(
                 child: Column(
                   children: [
-                    /// Top Image for Mobile
+                    /// Left side of Image for Mobile
                     Padding(
                       padding: EdgeInsets.only(bottom: SizingConfig.height(0.02)),
                       child: Image.asset(

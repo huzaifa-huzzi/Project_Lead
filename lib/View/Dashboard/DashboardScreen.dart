@@ -134,7 +134,6 @@ class DashboardScreen extends StatelessWidget {
                     },
                   ),
                 ),
-              //  Logo only in AppBar for Web
               if (screenWidth >= 1024)
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),

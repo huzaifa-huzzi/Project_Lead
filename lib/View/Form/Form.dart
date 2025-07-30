@@ -287,7 +287,7 @@ class FormFilling extends StatelessWidget {
       return Row(
         children: [
           Expanded(child: buildField(label1, child: child1)),
-           SizedBox(width: SizingConfig.width(0.2)),
+           SizedBox(width: SizingConfig.width(0.02)),
           Expanded(child: buildField(label2, child: child2)),
         ],
       );

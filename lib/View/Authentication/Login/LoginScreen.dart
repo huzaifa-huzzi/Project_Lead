@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     SizingConfig.init(context);
 
+
     return Scaffold(
       backgroundColor: AppColors.sidebarTextColor,
       body: LayoutBuilder(
